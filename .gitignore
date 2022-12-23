@@ -2,3 +2,5 @@
 Cargo.lock
 /gui/target
 /gui/Cargo.lock
+/webview/target
+/webview/Cargo.lock

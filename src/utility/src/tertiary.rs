@@ -9,6 +9,8 @@ pub struct Tertiary {
 }
 
 impl Tertiary {
+  #![allow(warnings, unused)]
+
   pub fn test(&self){
     println!("The value of the variables in Tertiary are :");
     println!("x = {}, y = {}, z = {}", self.x, self.y, self.z);

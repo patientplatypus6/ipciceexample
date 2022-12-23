@@ -8,6 +8,8 @@ pub struct Primary {
 }
 
 impl Primary{
+  #![allow(warnings, unused)]
+
   pub fn test(&self){
     println!("The value of the variables in Primary are :");
     println!("x = {}, y = {}, z = {}", self.x, self.y, self.z);

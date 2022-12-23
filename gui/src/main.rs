@@ -17,6 +17,7 @@ use std::future::Future;
 type Data = Vec<(String, String)>;
 type Bootstrap = (IpcSender<Data>, IpcReceiver<Data>);
 
+
 #[derive(Debug, Clone)]
 struct State {
     content: String,
@@ -214,6 +215,7 @@ pub async fn data_handler()-> (Data,IpcSender<Data>){
 
 
 fn main() {
+    #![allow(warnings, unused)]
     println!("Inside GUI process");
     App::run(Settings::default()).unwrap();
 }

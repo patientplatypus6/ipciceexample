@@ -27,6 +27,10 @@ fn server_handler(){
         "/Users/peterweyand/Code/rustprojects/project1_2/src/rungui.sh".to_string(),
         &server_name0
     );
+    let webserver = spawn_server(
+        "/Users/peterweyand/Code/rustprojects/project1_2/src/runwebview.sh".to_string(),
+        &server_name0
+    );
     let (_receiver, (sender, receiver)): (IpcReceiver<Bootstrap>, Bootstrap) = server0.accept().unwrap();
     sender.send(data);
 
@@ -44,6 +48,7 @@ fn server_handler(){
 }
 
 fn main() {
+    #[allow(warnings, unused)]
     println!("Inside process_handler");
     test_utility();
     server_handler();
