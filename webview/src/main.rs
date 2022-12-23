@@ -7,8 +7,8 @@ use ipc_channel::ipc::{self, IpcOneShotServer, IpcSender, IpcReceiver};
 type Data = Vec<(String, String)>;
 
 #[derive(Debug, Clone)]
-struct State {
-    content: String,
+pub struct State {
+    data: Option<Data>,
     parent: Option<IpcSender<Data>>
 }
 
@@ -34,23 +34,17 @@ fn main() -> wry::Result<()> {
       .build()?;
   
 
-    let state = State{
-        content: "none".to_string(),
+    let mut state = State{
+        data: None,
         parent: None
     };
 
     event_loop.run(move |event, x, control_flow| {
       *control_flow = ControlFlow::Wait;
-      println!("value of move values in event_loop");
-      println!("value of event {:?}", event);
-      println!("value of x {:?}", x);
-      println!("value of control_flow {:?}", control_flow);
-      println!("value of stateval {:?}", state.clone());
-
-
       match event {
         Event::NewEvents(StartCause::Init) => {
-            test();
+            let state = data_handler(state.clone());
+            println!("value of returnstate in NewEvents: {:?}, ", state);
         },
         Event::MainEventsCleared => {
             // control_flow_events(state.clone());
@@ -72,8 +66,9 @@ fn main() -> wry::Result<()> {
 //     println!("The value of state: {:?}", state);
 //   }
 
-  pub fn test() -> (Data, IpcSender<Data>){
+  pub fn data_handler(state: State) -> State {
     println!("inside function test");
+    println!("value of state: {:?}", state);
     let args: Vec<String> = env::args().collect();
     println!("value of args {:?}", args);
     let (to_child, from_parent): (IpcSender<Data>, IpcReceiver<Data>) = ipc::channel().unwrap();
@@ -82,5 +77,11 @@ fn main() -> wry::Result<()> {
     bootstrap.send((to_child, from_child)).unwrap();
 
     let data = from_parent.recv().unwrap();
-    (data, to_parent)
+    let state = State{
+        data: Some(data),
+        parent: Some(to_parent)
+    };
+
+    state
+
   } 
