@@ -23,10 +23,10 @@ fn server_handler(){
     let data = set_data_vec();
 
     let (server0, server_name0) = IpcOneShotServer::<Bootstrap>::new().unwrap();
-    // let guiserver = spawn_server(
-    //     "/Users/peterweyand/Code/rustprojects/project1_2/src/rungui.sh".to_string(),
-    //     &server_name0
-    // );
+    let guiserver = spawn_server(
+        "/Users/peterweyand/Code/rustprojects/project1_2/src/rungui.sh".to_string(),
+        &server_name0
+    );
     let webserver = spawn_server(
         "/Users/peterweyand/Code/rustprojects/project1_2/src/runwebview.sh".to_string(),
         &server_name0

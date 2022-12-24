@@ -1,6 +1,10 @@
 # servoproblemexample
 
-# What this is so far --
+# update v0.0.2
+
+I now have both the webview and the gui opening when running the top level `run.sh` file. They both can access the top level IPC_channel and pass data back and forth.
+
+# update v0.0.1
 
 So far what this repo does is that it has a top level cargo that holds the IPC channel data in the function -
 
