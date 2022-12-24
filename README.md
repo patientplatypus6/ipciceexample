@@ -35,3 +35,7 @@ struct State {
 I think this is a good pattern to use in order to hold state at top level. In this way multiple processes can be spun up and the GUI doesn't "own" state, except locally. Holding `parent: Option<IpcSender<Data>>` within a Struct can be used in other functions as a pattern as well. 
 
 What I intend to do further is include a process that uses a webview and then pass the data from this process to the top level and back down to the gui and back again. 
+
+# update v0.0.0
+
+The idea for this project comes from this [idea](https://www.reddit.com/r/idiotphilosophy/comments/zsxys4/kanpai_skroderider_the_revenge_of_the_trees_in/).
