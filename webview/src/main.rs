@@ -13,6 +13,24 @@ pub struct State {
 }
 
 fn main() -> wry::Result<()> {
+
+    let mut newstate = State{
+        data: None,
+        parent: None
+    };
+
+    let mut prevstate = State{
+        data: None,
+        parent: None
+    };
+
+    #[derive(Debug)]
+    enum UserEvent {
+        Navigation(String),
+    }
+
+    let url = "https://www.google.com";
+
     use wry::{
       application::{
         event::{Event, StartCause, WindowEvent},
@@ -22,12 +40,14 @@ fn main() -> wry::Result<()> {
       webview::WebViewBuilder,
     };
   
-    let event_loop = EventLoop::new();
+    // let event_loop = EventLoop::new();
+    let event_loop: EventLoop<UserEvent> = EventLoop::with_user_event();
+    let proxy = event_loop.create_proxy();
     let window = WindowBuilder::new()
       .with_title("Hello World")
       .build(&event_loop)?;
-    let _webview = WebViewBuilder::new(window)?
-      .with_url("https://tauri.studio")?
+      let _webview = WebViewBuilder::new(window)?
+      .with_url(url)?
       .build()?;
   
 
@@ -55,7 +75,13 @@ fn main() -> wry::Result<()> {
                 println!("value of newstatedata: {:?}", newstatedata);
                 state_updated(newstatedata, newstateparent);
                 prevstate = newstate.clone();
+                let newurl = "https://www.reddit.com".to_string();
+                proxy.send_event(UserEvent::Navigation(newurl.clone()));
             }
+        },
+        Event::UserEvent(UserEvent::Navigation(uri)) => {
+            println!("{}", uri);
+            //How do I navigate to a new URL here? 
         },
         Event::WindowEvent {
           event: WindowEvent::CloseRequested,
