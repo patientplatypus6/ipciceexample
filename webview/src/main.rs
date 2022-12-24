@@ -13,9 +13,6 @@ pub struct State {
 }
 
 fn main() -> wry::Result<()> {
-
-
-
     use wry::{
       application::{
         event::{Event, StartCause, WindowEvent},
@@ -34,7 +31,12 @@ fn main() -> wry::Result<()> {
       .build()?;
   
 
-    let mut state = State{
+    let mut newstate = State{
+        data: None,
+        parent: None
+    };
+
+    let mut prevstate = State{
         data: None,
         parent: None
     };
@@ -43,11 +45,17 @@ fn main() -> wry::Result<()> {
       *control_flow = ControlFlow::Wait;
       match event {
         Event::NewEvents(StartCause::Init) => {
-            let state = data_handler(state.clone());
-            println!("value of returnstate in NewEvents: {:?}, ", state);
+            newstate = data_handler(prevstate.clone());
         },
         Event::MainEventsCleared => {
-            // control_flow_events(state.clone());
+            if Some(newstate.data.clone()) != Some(prevstate.data.clone()) {  
+                println!("newstate.data.clone() {:?}", newstate.data.clone());
+                let newstatedata = newstate.data.clone().unwrap();
+                let newstateparent = newstate.parent.clone().unwrap();
+                println!("value of newstatedata: {:?}", newstatedata);
+                state_updated(newstatedata, newstateparent);
+                prevstate = newstate.clone();
+            }
         },
         Event::WindowEvent {
           event: WindowEvent::CloseRequested,
@@ -58,13 +66,13 @@ fn main() -> wry::Result<()> {
     });
   }
 
-//   pub async fn control_flow_events(state: State){
-//     // loop{
-//     //     println!("inside control_flow_events");
-//     //     thread::sleep_ms(1000);
-//     // };
-//     println!("The value of state: {:?}", state);
-//   }
+  pub fn state_updated(newstatedata: Data, parent: IpcSender<Data>){
+    println!("inside state_updated");
+    println!("inside state_updated and prevstatedata {:?}", newstatedata);
+    println!("inside state_updated and parent {:?}", parent);
+    parent.send(newstatedata);
+    // unwrappedparent.send(vec![("Dagne".to_string(), "8".to_string())]);
+  }
 
   pub fn data_handler(state: State) -> State {
     println!("inside function test");
