@@ -46,10 +46,9 @@ fn main() -> wry::Result<()> {
     let window = WindowBuilder::new()
       .with_title("Hello World")
       .build(&event_loop)?;
-      let _webview = WebViewBuilder::new(window)?
+    let webview = WebViewBuilder::new(window)?
       .with_url(url)?
       .build()?;
-  
 
     let mut newstate = State{
         data: None,
@@ -81,7 +80,9 @@ fn main() -> wry::Result<()> {
         },
         Event::UserEvent(UserEvent::Navigation(uri)) => {
             println!("{}", uri);
-            //How do I navigate to a new URL here? 
+            let url = uri.clone();
+            println!("value of url {:?}", url); 
+            webview.load_url(&uri);
         },
         Event::WindowEvent {
           event: WindowEvent::CloseRequested,
