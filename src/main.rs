@@ -21,6 +21,12 @@ fn set_data_vec() -> Data {
     ]
 }
 
+fn set_data_vec_test() -> Data {
+    vec![
+        ("test".to_string(), "test".to_string())
+    ]
+}
+
 fn server_handler(){
     println!("insider server_handler");
     let data = set_data_vec();
@@ -35,12 +41,17 @@ fn server_handler(){
     //     &server_name0
     // );
     let (_receiver, (sender, receiver)): (IpcReceiver<Bootstrap>, Bootstrap) = server0.accept().unwrap();
+    println!("value of sender outside loop {:?}", sender);
     sender.send(data);
 
     loop {
         match receiver.try_recv() {
             Ok(res) => {
                 println!("Received data in main...{:?}", res);
+                println!("Retransmitting to nodes....");
+                println!("value of sender in loop {:?}", sender);
+                // let data = set_data_vec_test();
+                sender.send(res);
             },
             Err(_) => {
                 println!("Still waiting in main...");
