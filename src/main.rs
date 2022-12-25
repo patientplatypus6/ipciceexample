@@ -15,7 +15,10 @@ fn test_utility(){
 }
 
 fn set_data_vec() -> Data {
-    vec![("Peter".to_string(), "36".to_string())]
+    vec![
+        ("URL".to_string(), "https://www.google.com".to_string()),
+        ("Peter".to_string(), "36".to_string())
+    ]
 }
 
 fn server_handler(){
@@ -27,10 +30,10 @@ fn server_handler(){
         "/Users/peterweyand/Code/rustprojects/project1_2/src/rungui.sh".to_string(),
         &server_name0
     );
-    let webserver = spawn_server(
-        "/Users/peterweyand/Code/rustprojects/project1_2/src/runwebview.sh".to_string(),
-        &server_name0
-    );
+    // let webserver = spawn_server(
+    //     "/Users/peterweyand/Code/rustprojects/project1_2/src/runwebview.sh".to_string(),
+    //     &server_name0
+    // );
     let (_receiver, (sender, receiver)): (IpcReceiver<Bootstrap>, Bootstrap) = server0.accept().unwrap();
     sender.send(data);
 
